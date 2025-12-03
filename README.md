@@ -4,6 +4,12 @@ Music Picker is a web application designed to analyze audio files and online aud
 
 Music Picker 是一个网络应用程序，旨在分析音频文件和在线音频链接，以确定其作为办公室午休唤醒音乐的适用性。它根据各种音频特征对音乐进行量化评估，以确保能量与舒适度之间的完美平衡，帮助您清醒醒来而不会感到刺耳。
 
+## Glance （一瞥）
+<img width="2152" height="3602" alt="image" src="https://github.com/user-attachments/assets/7c036916-e51a-4c20-a779-85546e764ea8" />
+
+<img width="2156" height="3598" alt="image" src="https://github.com/user-attachments/assets/a696eb6b-77ed-47f5-890e-40c063bda9c7" />
+
+
 ## ✨ Features (功能特性)
 
 *   **Audio Analysis (音频分析)**:
