@@ -11,8 +11,10 @@ import { Music, Sparkles } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/lib/i18n';
 
 interface HistoryItem {
+  id: string;
   result: AnalysisResultType;
   timestamp: string;
+  audioUrl?: string;
 }
 
 function MusicPickerApp() {
@@ -22,16 +24,19 @@ function MusicPickerApp() {
   const [analysisResult, setAnalysisResult] = useState<AnalysisResultType | null>(null);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const { t } = useLanguage();
 
-  const processResult = async (result: AnalysisResultType) => {
+  const processResult = async (result: AnalysisResultType, currentAudioUrl?: string) => {
     setStatusMessage(t.statusProcessing);
     setAnalysisResult(result);
 
     // Add to history
     const newHistoryItem: HistoryItem = {
+      id: Date.now().toString(),
       result: result,
       timestamp: new Date().toLocaleTimeString(),
+      audioUrl: currentAudioUrl,
     };
     setHistory(prev => [newHistoryItem, ...prev]);
 
@@ -52,11 +57,13 @@ function MusicPickerApp() {
     setErrorMessage(null);
     setAnalysisResult(null);
     setRecommendations([]);
+    const url = URL.createObjectURL(file);
+    setAudioUrl(url);
 
     try {
       setStatusMessage(t.statusAnalyzing);
       const result = await analyzeAudio(file);
-      await processResult(result);
+      await processResult(result, url);
     } catch (error) {
       console.error('Error processing file:', error);
       setErrorMessage(t.errorFailed);
@@ -72,11 +79,12 @@ function MusicPickerApp() {
     setErrorMessage(null);
     setAnalysisResult(null);
     setRecommendations([]);
+    setAudioUrl(url);
 
     try {
       setStatusMessage(t.statusAnalyzing);
       const result = await analyzeAudioUrl(url);
-      await processResult(result);
+      await processResult(result, url);
     } catch (error: any) {
       console.error('Error processing URL:', error);
       setErrorMessage(error.message || t.errorFailed);
@@ -84,6 +92,13 @@ function MusicPickerApp() {
       setIsAnalyzing(false);
       setStatusMessage('');
     }
+  };
+
+  const handleHistorySelect = (item: HistoryItem) => {
+    setAnalysisResult(item.result);
+    setAudioUrl(item.audioUrl || null);
+    // Optionally scroll to top or results section
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -127,7 +142,7 @@ function MusicPickerApp() {
           {/* Results Section */}
           {analysisResult && (
             <section className="animate-in fade-in slide-in-from-bottom-8 duration-700">
-              <AnalysisResult result={analysisResult} />
+              <AnalysisResult result={analysisResult} audioUrl={audioUrl || undefined} />
             </section>
           )}
 
@@ -141,7 +156,11 @@ function MusicPickerApp() {
           {/* History Section */}
           {history.length > 0 && (
             <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-              <HistoryList history={history} onClear={() => setHistory([])} />
+              <HistoryList
+                history={history}
+                onClear={() => setHistory([])}
+                onSelect={handleHistorySelect}
+              />
             </section>
           )}
 

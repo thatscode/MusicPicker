@@ -3,12 +3,14 @@ import { AnalysisResult as AnalysisResultType } from '@/lib/api';
 import { Activity, Music2, Zap, AlertCircle, CheckCircle } from 'lucide-react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { useLanguage } from '@/lib/i18n';
+import { WaveformPlayer } from './WaveformPlayer';
 
 interface AnalysisResultProps {
     result: AnalysisResultType;
+    audioUrl?: string;
 }
 
-export function AnalysisResult({ result }: AnalysisResultProps) {
+export function AnalysisResult({ result, audioUrl }: AnalysisResultProps) {
     const { t } = useLanguage();
     const isSuitable = result.suitability_score >= 7.0;
 
@@ -26,12 +28,19 @@ export function AnalysisResult({ result }: AnalysisResultProps) {
 
     return (
         <div className="bg-gray-900 rounded-xl p-6 shadow-xl border border-gray-800">
-            <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold flex items-center gap-2">
+            <div className="flex items-center justify-between mb-6 gap-4">
+                <h2 className="text-2xl font-bold flex items-center gap-2 flex-shrink-0">
                     <Activity className="text-blue-500" />
                     {t.analysisReport}
                 </h2>
-                <div className={`flex items-center gap-2 px-4 py-2 rounded-full font-bold ${isSuitable ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+
+                <div className="flex-grow text-center px-4">
+                    <span className="text-lg font-medium text-gray-300 truncate block max-w-md mx-auto" title={result.filename}>
+                        {result.filename}
+                    </span>
+                </div>
+
+                <div className={`flex items-center gap-2 px-4 py-2 rounded-full font-bold flex-shrink-0 ${isSuitable ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
                     }`}>
                     {isSuitable ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
                     {t.score}: {result.suitability_score}/10
@@ -126,6 +135,8 @@ export function AnalysisResult({ result }: AnalysisResultProps) {
                     <li>• {t.criteria.onsetStrength}</li>
                 </ul>
             </div>
+
+            {audioUrl && <WaveformPlayer audioUrl={audioUrl} />}
         </div>
     );
 }

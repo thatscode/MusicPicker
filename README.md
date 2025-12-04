@@ -23,6 +23,9 @@ Music Picker 是一个网络应用程序，旨在分析音频文件和在线音�
 *   **Detailed Visualization (详细可视化)**:
     *   Displays analysis results using an intuitive Radar Chart.
     *   使用直观的雷达图展示分析结果。
+*   **Audio Playback (音频播放)**:
+    *   Integrated waveform player to preview analyzed tracks directly.
+    *   集成波形播放器，可直接预览分析过的曲目。
 *   **Bilingual Support (双语支持)**:
     *   Fully localized interface in English and Chinese.
     *   完全本地化的中英文界面。
@@ -43,6 +46,7 @@ Music Picker 是一个网络应用程序，旨在分析音频文件和在线音�
 *   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 *   **Icons**: [Lucide React](https://lucide.dev/)
 *   **Charts**: [Recharts](https://recharts.org/)
+*   **Audio Player**: [wavesurfer.js](https://wavesurfer.xyz/)
 *   **State Management**: React Context API
 
 ### Backend (后端)
