@@ -7,9 +7,11 @@ Music Picker 是一个网络应用程序，旨在分析音频文件和在线音�
 ## Glance （一瞥）
 <details>
 <summary> click here to see details (点击查看详情) </summary>
-<img width="2152" height="3602" alt="image" src="https://github.com/user-attachments/assets/7c036916-e51a-4c20-a779-85546e764ea8" />
-   
-<img width="2156" height="3598" alt="image" src="https://github.com/user-attachments/assets/a696eb6b-77ed-47f5-890e-40c063bda9c7" />
+
+<img width="2156" height="auto" alt="image" src="https://github.com/user-attachments/assets/492198c7-7623-41eb-9f9e-1bb7f73c1624" />
+
+<img width="2152" height="auto" alt="image" src="https://github.com/user-attachments/assets/1e2f4097-7d2c-450b-acfc-250d5bb5703e" />
+
 </details>
 
 ## ✨ Features (功能特性)
