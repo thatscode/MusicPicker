@@ -21,12 +21,15 @@ export function AudioUploader({ onUpload, onUrlUpload, isAnalyzing, statusMessag
         }
     }, [onUpload]);
 
+    const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100 MB
+
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         accept: {
             'audio/*': ['.mp3', '.wav', '.ogg', '.m4a']
         },
         maxFiles: 1,
+        maxSize: MAX_FILE_SIZE,
         disabled: isAnalyzing
     });
 

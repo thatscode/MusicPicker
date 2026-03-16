@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AudioUploader } from '@/components/AudioUploader';
 import { AnalysisResult } from '@/components/AnalysisResult';
 import { RecommendationList } from '@/components/RecommendationList';
@@ -17,6 +17,17 @@ interface HistoryItem {
   audioUrl?: string;
 }
 
+const HISTORY_STORAGE_KEY = 'musicpicker_history';
+
+function loadHistory(): HistoryItem[] {
+  try {
+    const raw = localStorage.getItem(HISTORY_STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as HistoryItem[]) : [];
+  } catch {
+    return [];
+  }
+}
+
 function MusicPickerApp() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
@@ -26,6 +37,24 @@ function MusicPickerApp() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const { t } = useLanguage();
+
+  // Restore history from localStorage on first mount
+  useEffect(() => {
+    setHistory(loadHistory());
+  }, []);
+
+  // Persist history whenever it changes (skip blob URLs — they don't survive refresh)
+  useEffect(() => {
+    const persistable = history.map(item => ({
+      ...item,
+      audioUrl: item.audioUrl?.startsWith('blob:') ? undefined : item.audioUrl,
+    }));
+    try {
+      localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(persistable));
+    } catch {
+      // Storage quota exceeded — ignore silently
+    }
+  }, [history]);
 
   const processResult = async (result: AnalysisResultType, currentAudioUrl?: string) => {
     setStatusMessage(t.statusProcessing);
